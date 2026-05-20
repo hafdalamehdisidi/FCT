@@ -16,4 +16,7 @@ public interface ProfesorRepository extends JpaRepository<Profesor, Long> {
     // Spring genera automáticamente el SQL para buscar por email
     // Se usa en el login para identificar al profesor
     Optional<Profesor> findByEmail(String email);
+
+    // Cuenta cuántos profesores tienen el flag directiva al valor indicado
+    long countByDirectiva(boolean directiva);
 }

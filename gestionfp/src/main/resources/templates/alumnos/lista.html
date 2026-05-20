@@ -1,36 +1,41 @@
 <!--
     Author: Hafdala Mehdi Sidi
-    Lista de alumnos con filtro por curso.
-    Accesible para todos los profesores.
+    Lista de alumnos internacionalizada.
+    Se puede cambiar el idioma añadiendo ?lang=es o ?lang=en a la URL.
 -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Alumnos</title>
+    <title th:text="#{alumnos.titulo}">Gestión de Alumnos</title>
     <link rel="stylesheet" th:href="@{/css/estilo.css}">
 </head>
 <body>
 <div class="contenedor">
 
     <div class="cabecera">
-        <h2>Gestión de Alumnos</h2>
-        <a th:href="@{/inicio}">Volver al inicio</a>
+        <h2 th:text="#{alumnos.titulo}"></h2>
+        <div>
+            <!-- Botones para cambiar el idioma -->
+            <a th:href="@{/alumnos(lang=es)}">🇪🇸 Español</a> |
+            <a th:href="@{/alumnos(lang=en)}">🇬🇧 English</a>
+        </div>
+        <a th:href="@{/inicio}" th:text="#{alumnos.volver}"></a>
     </div>
 
     <div th:if="${mensaje}" class="exito" th:text="${mensaje}"></div>
     <div th:if="${error}" class="error" th:text="${error}"></div>
 
     <div class="acciones">
-        <a th:href="@{/alumnos/nuevo}" class="boton">Nuevo Alumno</a>
-        <a th:href="@{/alumnos/importar}" class="boton">Importar CSV</a>
+        <a th:href="@{/alumnos/nuevo}" class="boton" th:text="#{alumnos.nuevo}"></a>
+        <a th:href="@{/alumnos/importar}" class="boton" th:text="#{alumnos.importar}"></a>
     </div>
 
     <!-- Filtro por curso -->
     <form th:action="@{/alumnos}" method="get" style="margin: 15px 0;">
-        <label for="cursoId">Filtrar por curso:</label>
+        <label for="cursoId" th:text="#{alumnos.filtrar}"></label>
         <select id="cursoId" name="cursoId" onchange="this.form.submit()">
-            <option value="">-- Todos los cursos --</option>
+            <option value="" th:text="#{alumnos.todos}"></option>
             <option th:each="curso : ${cursos}"
                     th:value="${curso.id}"
                     th:text="${curso.nombre}"
@@ -42,12 +47,12 @@
     <table>
         <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Apellidos</th>
-            <th>Email</th>
-            <th>Curso</th>
-            <th>Fecha Nacimiento</th>
-            <th>Acciones</th>
+            <th th:text="#{alumnos.nombre}"></th>
+            <th th:text="#{alumnos.apellidos}"></th>
+            <th th:text="#{alumnos.email}"></th>
+            <th th:text="#{alumnos.curso}"></th>
+            <th th:text="#{alumnos.fechaNacimiento}"></th>
+            <th th:text="#{alumnos.acciones}"></th>
         </tr>
         </thead>
         <tbody>
@@ -59,11 +64,13 @@
             <!-- Fecha formateada en formato español dd/MM/yyyy -->
             <td th:text="${#temporals.format(alumno.fechaNacimiento, 'dd/MM/yyyy')}"></td>
             <td>
-                <a th:href="@{/alumnos/editar/{id}(id=${alumno.id})}" class="boton">Editar</a>
+                <a th:href="@{/alumnos/editar/{id}(id=${alumno.id})}"
+                   class="boton"
+                   th:text="#{alumnos.editar}"></a>
                 <a th:href="@{/alumnos/eliminar/{id}(id=${alumno.id})}"
                    class="boton"
-                   onclick="return confirm('¿Estás seguro de eliminar este alumno?')">
-                    Eliminar
+                   th:onclick="'return confirm(\'' + #{alumnos.confirmarEliminar} + '\')'">
+                    <span th:text="#{alumnos.eliminar}"></span>
                 </a>
             </td>
         </tr>

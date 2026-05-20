@@ -3,6 +3,7 @@ package com.fpemp.gestionfp.service;
 import com.fpemp.gestionfp.model.Profesor;
 import com.fpemp.gestionfp.repository.ProfesorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -62,7 +63,22 @@ public class ServicioProfesor {
     }
 
     // Elimina un profesor por su id
+    // No se puede eliminar si es el único miembro de la Directiva
+    // ni si es el propio usuario autenticado
     public void eliminar(Long id) {
+        Profesor profesor = obtenerPorId(id);
+
+        String emailAutenticado = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+        if (profesor.getEmail().equals(emailAutenticado)) {
+            throw new RuntimeException("No puedes eliminar tu propio usuario");
+        }
+
+        if (profesor.isDirectiva() && repositorioProfesor.countByDirectiva(true) <= 1) {
+            throw new RuntimeException(
+                    "No se puede eliminar el único profesor de la Directiva");
+        }
+
         repositorioProfesor.deleteById(id);
     }
 
