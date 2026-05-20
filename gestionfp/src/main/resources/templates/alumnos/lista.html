@@ -1,0 +1,75 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Lista de alumnos con filtro por curso.
+    Accesible para todos los profesores.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Alumnos</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Gestión de Alumnos</h2>
+        <a th:href="@{/inicio}">Volver al inicio</a>
+    </div>
+
+    <div th:if="${mensaje}" class="exito" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <div class="acciones">
+        <a th:href="@{/alumnos/nuevo}" class="boton">Nuevo Alumno</a>
+        <a th:href="@{/alumnos/importar}" class="boton">Importar CSV</a>
+    </div>
+
+    <!-- Filtro por curso -->
+    <form th:action="@{/alumnos}" method="get" style="margin: 15px 0;">
+        <label for="cursoId">Filtrar por curso:</label>
+        <select id="cursoId" name="cursoId" onchange="this.form.submit()">
+            <option value="">-- Todos los cursos --</option>
+            <option th:each="curso : ${cursos}"
+                    th:value="${curso.id}"
+                    th:text="${curso.nombre}"
+                    th:selected="${curso.id == cursoSeleccionado}">
+            </option>
+        </select>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Curso</th>
+            <th>Fecha Nacimiento</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="alumno : ${alumnos}">
+            <td th:text="${alumno.nombre}"></td>
+            <td th:text="${alumno.apellidos}"></td>
+            <td th:text="${alumno.email}"></td>
+            <td th:text="${alumno.curso != null ? alumno.curso.nombre : '-'}"></td>
+            <!-- Fecha formateada en formato español dd/MM/yyyy -->
+            <td th:text="${#temporals.format(alumno.fechaNacimiento, 'dd/MM/yyyy')}"></td>
+            <td>
+                <a th:href="@{/alumnos/editar/{id}(id=${alumno.id})}" class="boton">Editar</a>
+                <a th:href="@{/alumnos/eliminar/{id}(id=${alumno.id})}"
+                   class="boton"
+                   onclick="return confirm('¿Estás seguro de eliminar este alumno?')">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
