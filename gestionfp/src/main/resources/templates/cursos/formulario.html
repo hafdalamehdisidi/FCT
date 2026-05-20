@@ -1,0 +1,49 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Formulario para crear y editar cursos.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Curso</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2 th:if="${curso.id == null}">Nuevo Curso</h2>
+        <h2 th:if="${curso.id != null}">Editar Curso</h2>
+        <a th:href="@{/cursos}">Volver a la lista</a>
+    </div>
+
+    <!-- Formulario CREAR -->
+    <form th:if="${curso.id == null}"
+          th:action="@{/cursos/guardar}"
+          th:object="${curso}"
+          method="post">
+
+        <label for="nombre">Nombre del curso:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Ej: 1º DAW"/>
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <!-- Formulario EDITAR -->
+    <form th:if="${curso.id != null}"
+          th:action="@{/cursos/actualizar/{id}(id=${curso.id})}"
+          th:object="${curso}"
+          method="post">
+
+        <label for="nombreEditar">Nombre del curso:</label>
+        <input type="text" id="nombreEditar" th:field="*{nombre}" placeholder="Ej: 1º DAW"/>
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+</div>
+</body>
+</html>
