@@ -1,0 +1,55 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Lista de todas las empresas. Accesible para todos los profesores.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Empresas</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Gestión de Empresas</h2>
+        <a th:href="@{/inicio}">Volver al inicio</a>
+    </div>
+
+    <div th:if="${mensaje}" class="exito" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <a th:href="@{/empresas/nueva}" class="boton">Nueva Empresa</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Tutor</th>
+            <th>Email Tutor</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="empresa : ${empresas}">
+            <td th:text="${empresa.nombre}"></td>
+            <td th:text="${empresa.descripcion}"></td>
+            <td th:text="${empresa.nombreTutor}"></td>
+            <td th:text="${empresa.emailTutor}"></td>
+            <td>
+                <a th:href="@{/empresas/editar/{id}(id=${empresa.id})}" class="boton">Editar</a>
+                <a th:href="@{/empresas/eliminar/{id}(id=${empresa.id})}"
+                   class="boton"
+                   onclick="return confirm('¿Estás seguro de eliminar esta empresa?')">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

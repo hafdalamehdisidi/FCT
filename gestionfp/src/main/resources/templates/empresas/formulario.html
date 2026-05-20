@@ -1,0 +1,71 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Formulario para crear y editar empresas.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Empresa</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2 th:if="${empresa.id == null}">Nueva Empresa</h2>
+        <h2 th:if="${empresa.id != null}">Editar Empresa</h2>
+        <a th:href="@{/empresas}">Volver a la lista</a>
+    </div>
+
+    <!-- Formulario CREAR -->
+    <form th:if="${empresa.id == null}"
+          th:action="@{/empresas/guardar}"
+          th:object="${empresa}"
+          method="post">
+
+        <label for="nombre">Nombre de la empresa:</label>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre"/>
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" th:field="*{descripcion}" placeholder="Descripción" rows="3"></textarea>
+
+        <label for="nombreTutor">Nombre del tutor laboral:</label>
+        <input type="text" id="nombreTutor" th:field="*{nombreTutor}" placeholder="Nombre completo del tutor"/>
+        <span class="error" th:if="${#fields.hasErrors('nombreTutor')}" th:errors="*{nombreTutor}"></span>
+
+        <label for="emailTutor">Email del tutor:</label>
+        <input type="email" id="emailTutor" th:field="*{emailTutor}" placeholder="Email del tutor"/>
+        <span class="error" th:if="${#fields.hasErrors('emailTutor')}" th:errors="*{emailTutor}"></span>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <!-- Formulario EDITAR -->
+    <form th:if="${empresa.id != null}"
+          th:action="@{/empresas/actualizar/{id}(id=${empresa.id})}"
+          th:object="${empresa}"
+          method="post">
+
+        <label for="nombreEditar">Nombre de la empresa:</label>
+        <input type="text" id="nombreEditar" th:field="*{nombre}" placeholder="Nombre"/>
+        <span class="error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+
+        <label for="descripcionEditar">Descripción:</label>
+        <textarea id="descripcionEditar" th:field="*{descripcion}" placeholder="Descripción" rows="3"></textarea>
+
+        <label for="nombreTutorEditar">Nombre del tutor laboral:</label>
+        <input type="text" id="nombreTutorEditar" th:field="*{nombreTutor}" placeholder="Nombre completo del tutor"/>
+        <span class="error" th:if="${#fields.hasErrors('nombreTutor')}" th:errors="*{nombreTutor}"></span>
+
+        <label for="emailTutorEditar">Email del tutor:</label>
+        <input type="email" id="emailTutorEditar" th:field="*{emailTutor}" placeholder="Email del tutor"/>
+        <span class="error" th:if="${#fields.hasErrors('emailTutor')}" th:errors="*{emailTutor}"></span>
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+</div>
+</body>
+</html>
