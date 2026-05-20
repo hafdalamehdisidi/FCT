@@ -36,24 +36,28 @@ public class ConfiguracionSeguridad {
 
         http
                 .authorizeHttpRequests(autorizacion -> autorizacion
-                        // Páginas públicas: login y recursos estáticos (CSS, JS)
+                        // Páginas públicas: login y recursos estáticos
                         .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                        // La API REST es accesible sin login (para la app móvil)
+                        .requestMatchers("/api/**").permitAll()
                         // Solo la Directiva puede gestionar profesores y cursos
                         .requestMatchers("/profesores/**", "/cursos/**").hasRole("DIRECTIVA")
-                        // El resto de páginas requieren estar autenticado
+                        // El resto requiere estar autenticado
                         .anyRequest().authenticated()
                 )
                 .formLogin(formulario -> formulario
-                        // Página de login personalizada
                         .loginPage("/login")
-                        // Después del login exitoso, ir al inicio
                         .defaultSuccessUrl("/inicio", true)
                         .permitAll()
                 )
                 .logout(cerrarSesion -> cerrarSesion
-                        // Al hacer logout, volvemos al login
                         .logoutSuccessUrl("/login?logout")
                         .permitAll()
+                )
+                // Desactivamos CSRF para la API REST porque los clientes
+                // externos no usan el mecanismo de formularios de Spring
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
                 );
 
         return http.build();
