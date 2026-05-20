@@ -29,7 +29,6 @@ public class Profesor {
     private String email;
 
     // Contraseña encriptada (nunca se guarda en texto plano)
-    @NotBlank
     private String password;
 
     // true = pertenece a la Directiva, false = profesor normal

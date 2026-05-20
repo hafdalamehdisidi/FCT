@@ -1,0 +1,61 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Lista de todas las prácticas.
+    Accesible para todos los profesores.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Prácticas</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Gestión de Prácticas</h2>
+        <a th:href="@{/inicio}">Volver al inicio</a>
+    </div>
+
+    <div th:if="${mensaje}" class="exito" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <a th:href="@{/practicas/nueva}" class="boton">Nueva Práctica</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Alumno</th>
+            <th>Curso</th>
+            <th>Empresa</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Comentarios</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="practica : ${practicas}">
+            <td th:text="${practica.alumno.nombre + ' ' + practica.alumno.apellidos}"></td>
+            <td th:text="${practica.alumno.curso != null ? practica.alumno.curso.nombre : '-'}"></td>
+            <td th:text="${practica.empresa.nombre}"></td>
+            <!-- Fechas formateadas en formato español -->
+            <td th:text="${#temporals.format(practica.fechaInicio, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(practica.fechaFin, 'dd/MM/yyyy')}"></td>
+            <td th:text="${practica.comentarios}"></td>
+            <td>
+                <a th:href="@{/practicas/editar/{id}(id=${practica.id})}" class="boton">Editar</a>
+                <a th:href="@{/practicas/eliminar/{id}(id=${practica.id})}"
+                   class="boton"
+                   onclick="return confirm('¿Estás seguro de eliminar esta práctica?')">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Formulario para crear y editar prácticas.
+    Al crear una práctica se envía automáticamente un email al alumno.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario Práctica</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2 th:if="${practica.id == null}">Nueva Práctica</h2>
+        <h2 th:if="${practica.id != null}">Editar Práctica</h2>
+        <a th:href="@{/practicas}">Volver a la lista</a>
+    </div>
+
+    <!-- Aviso de que se enviará email al crear -->
+    <div th:if="${practica.id == null}" style="background:#fff3cd; padding:10px; border-radius:4px; margin-bottom:15px;">
+        Al crear la práctica se enviará un email automático al alumno.
+    </div>
+
+    <!-- Formulario CREAR -->
+    <form th:if="${practica.id == null}"
+          th:action="@{/practicas/guardar}"
+          th:object="${practica}"
+          method="post">
+
+        <label for="alumno">Alumno:</label>
+        <select id="alumno" th:field="*{alumno}">
+            <option value="">-- Selecciona un alumno --</option>
+            <option th:each="alumno : ${alumnos}"
+                    th:value="${alumno.id}"
+                    th:text="${alumno.nombre + ' ' + alumno.apellidos}">
+            </option>
+        </select>
+        <span class="error" th:if="${#fields.hasErrors('alumno')}" th:errors="*{alumno}"></span>
+
+        <label for="empresa">Empresa:</label>
+        <select id="empresa" th:field="*{empresa}">
+            <option value="">-- Selecciona una empresa --</option>
+            <option th:each="empresa : ${empresas}"
+                    th:value="${empresa.id}"
+                    th:text="${empresa.nombre}">
+            </option>
+        </select>
+        <span class="error" th:if="${#fields.hasErrors('empresa')}" th:errors="*{empresa}"></span>
+
+        <label for="fechaInicio">Fecha de inicio:</label>
+        <input type="date" id="fechaInicio" th:field="*{fechaInicio}"/>
+        <span class="error" th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}"></span>
+
+        <label for="fechaFin">Fecha de fin:</label>
+        <input type="date" id="fechaFin" th:field="*{fechaFin}"/>
+        <span class="error" th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}"></span>
+
+        <label for="comentarios">Comentarios:</label>
+        <textarea id="comentarios" th:field="*{comentarios}" rows="4"
+                  placeholder="Comentarios opcionales sobre la práctica"></textarea>
+
+        <button type="submit">Guardar</button>
+    </form>
+
+    <!-- Formulario EDITAR -->
+    <form th:if="${practica.id != null}"
+          th:action="@{/practicas/actualizar/{id}(id=${practica.id})}"
+          th:object="${practica}"
+          method="post">
+
+        <label for="alumnoEditar">Alumno:</label>
+        <select id="alumnoEditar" th:field="*{alumno}">
+            <option value="">-- Selecciona un alumno --</option>
+            <option th:each="alumno : ${alumnos}"
+                    th:value="${alumno.id}"
+                    th:text="${alumno.nombre + ' ' + alumno.apellidos}">
+            </option>
+        </select>
+
+        <label for="empresaEditar">Empresa:</label>
+        <select id="empresaEditar" th:field="*{empresa}">
+            <option value="">-- Selecciona una empresa --</option>
+            <option th:each="empresa : ${empresas}"
+                    th:value="${empresa.id}"
+                    th:text="${empresa.nombre}">
+            </option>
+        </select>
+
+        <label for="fechaInicioEditar">Fecha de inicio:</label>
+        <input type="date" id="fechaInicioEditar" th:field="*{fechaInicio}"/>
+
+        <label for="fechaFinEditar">Fecha de fin:</label>
+        <input type="date" id="fechaFinEditar" th:field="*{fechaFin}"/>
+
+        <label for="comentariosEditar">Comentarios:</label>
+        <textarea id="comentariosEditar" th:field="*{comentarios}" rows="4"
+                  placeholder="Comentarios opcionales"></textarea>
+
+        <button type="submit">Guardar cambios</button>
+    </form>
+
+</div>
+</body>
+</html>

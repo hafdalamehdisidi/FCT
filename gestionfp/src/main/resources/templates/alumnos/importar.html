@@ -1,0 +1,43 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Formulario para importar alumnos desde un fichero CSV.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Importar Alumnos CSV</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Importar Alumnos desde CSV</h2>
+        <a th:href="@{/alumnos}">Volver a la lista</a>
+    </div>
+
+    <p>El fichero CSV debe tener el siguiente formato (sin espacios extra):</p>
+    <pre>nombre,apellidos,email,fechaNacimiento</pre>
+    <p>La fecha debe estar en formato <strong>dd/MM/yyyy</strong>. La primera línea se interpreta como cabecera y se ignora.</p>
+
+    <form th:action="@{/alumnos/importar}" method="post" enctype="multipart/form-data">
+
+        <label for="fichero">Fichero CSV:</label>
+        <input type="file" id="fichero" name="fichero" accept=".csv" required/>
+
+        <label for="cursoId">Curso:</label>
+        <select id="cursoId" name="cursoId" required>
+            <option value="">-- Selecciona un curso --</option>
+            <option th:each="curso : ${cursos}"
+                    th:value="${curso.id}"
+                    th:text="${curso.nombre}">
+            </option>
+        </select>
+
+        <button type="submit">Importar</button>
+    </form>
+
+</div>
+</body>
+</html>

@@ -2,6 +2,7 @@ package com.fpemp.gestionfp.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 /**
  * @author Hafdala Mehdi Sidi
@@ -28,9 +29,11 @@ public class Practica {
     private Empresa empresa;
 
     @NotNull(message = "La fecha de inicio es obligatoria")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate fechaInicio;
 
     @NotNull(message = "La fecha de fin es obligatoria")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate fechaFin;
 
     // Campo de texto libre para que el profesor añada comentarios

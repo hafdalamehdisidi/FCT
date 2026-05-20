@@ -34,4 +34,7 @@ public class Curso {
 
     public List<Alumno> getAlumnos() { return alumnos; }
     public void setAlumnos(List<Alumno> alumnos) { this.alumnos = alumnos; }
+
+    @Override
+    public String toString() { return id != null ? id.toString() : ""; }
 }

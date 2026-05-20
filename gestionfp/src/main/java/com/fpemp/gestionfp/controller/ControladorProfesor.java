@@ -48,6 +48,12 @@ public class ControladorProfesor {
             return "profesores/formulario";
         }
 
+        // Al crear, la contraseña es obligatoria
+        if (profesor.getPassword() == null || profesor.getPassword().isBlank()) {
+            resultado.rejectValue("password", "error.password", "La contraseña es obligatoria");
+            return "profesores/formulario";
+        }
+
         // Comprobamos que el email no esté ya registrado
         if (servicioProfesor.existeEmail(profesor.getEmail())) {
             resultado.rejectValue("email", "error.email", "Este email ya está registrado");
