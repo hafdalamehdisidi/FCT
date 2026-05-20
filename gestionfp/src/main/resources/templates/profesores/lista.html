@@ -1,0 +1,57 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Lista de todos los profesores. Solo accesible para la Directiva.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Profesores</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Gestión de Profesores</h2>
+        <a th:href="@{/inicio}">Volver al inicio</a>
+    </div>
+
+    <!-- Mensajes de éxito o error -->
+    <div th:if="${mensaje}" class="exito" th:text="${mensaje}"></div>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+
+    <a th:href="@{/profesores/nuevo}" class="boton">Nuevo Profesor</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="profesor : ${profesores}">
+            <td th:text="${profesor.nombre}"></td>
+            <td th:text="${profesor.apellidos}"></td>
+            <td th:text="${profesor.email}"></td>
+            <!-- Mostramos el tipo de profesor en texto legible -->
+            <td th:text="${profesor.directiva} ? 'Directiva' : 'Profesor'"></td>
+            <td>
+                <a th:href="@{/profesores/editar/{id}(id=${profesor.id})}" class="boton">Editar</a>
+                <a th:href="@{/profesores/eliminar/{id}(id=${profesor.id})}"
+                   class="boton"
+                   onclick="return confirm('¿Estás seguro de eliminar este profesor?')">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
