@@ -1,0 +1,48 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Página de inicio. Muestra el menú principal según el rol del profesor.
+    Si es Directiva ve todas las opciones, si es profesor normal no ve
+    la gestión de profesores ni cursos.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión FP - Inicio</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+
+<div class="contenedor">
+
+    <!-- Cabecera con el email del profesor conectado -->
+    <div class="cabecera">
+        <h2>Gestión Formación en Empresa</h2>
+        <p>Conectado como: <strong sec:authentication="name"></strong></p>
+        <a th:href="@{/logout}">Cerrar sesión</a>
+    </div>
+
+    <h3>Menú principal</h3>
+
+    <div class="menu">
+
+        <!-- Opciones solo visibles para la Directiva -->
+        <div sec:authorize="hasRole('DIRECTIVA')">
+            <h4>Administración (solo Directiva)</h4>
+            <a th:href="@{/profesores}">Gestionar Profesores</a>
+            <a th:href="@{/cursos}">Gestionar Cursos</a>
+            <a th:href="@{/estadisticas}">Ver Estadísticas</a>
+        </div>
+
+        <!-- Opciones visibles para todos los profesores -->
+        <h4>Gestión General</h4>
+        <a th:href="@{/empresas}">Gestionar Empresas</a>
+        <a th:href="@{/alumnos}">Gestionar Alumnos</a>
+        <a th:href="@{/practicas}">Gestionar Prácticas</a>
+
+    </div>
+</div>
+
+</body>
+</html>

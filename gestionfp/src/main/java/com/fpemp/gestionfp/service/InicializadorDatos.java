@@ -37,7 +37,7 @@ public class InicializadorDatos implements CommandLineRunner {
             director.setDirectiva(true);
 
             repositorioProfesor.save(director);
-            System.out.println(">>> Profesor inicial creado: admin@fpemp.com / admin123");
+            System.out.println("Profesor inicial creado: admin@fpemp.com / admin123");
         }
     }
 }
