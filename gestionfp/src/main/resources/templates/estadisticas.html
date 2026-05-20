@@ -1,0 +1,149 @@
+<!--
+    Author: Hafdala Mehdi Sidi
+    Página de estadísticas. Solo accesible para la Directiva.
+    Muestra en tabla y en gráficas de barras:
+    - Número de alumnos asignados a cada empresa.
+    - Número de alumnos que realizan prácticas por cada curso.
+    Las gráficas se generan con Chart.js, una librería JavaScript gratuita.
+-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Estadísticas de Prácticas</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <!-- Cargamos Chart.js desde CDN para dibujar las gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="contenedor">
+
+    <div class="cabecera">
+        <h2>Estadísticas de Prácticas</h2>
+        <a th:href="@{/inicio}">Volver al inicio</a>
+    </div>
+
+    <!-- ======================== -->
+    <!-- ESTADÍSTICAS POR EMPRESA -->
+    <!-- ======================== -->
+    <h3>Alumnos por Empresa</h3>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Empresa</th>
+            <th>Nº Alumnos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entrada : ${alumnosPorEmpresa}">
+            <td th:text="${entrada.key}"></td>
+            <td th:text="${entrada.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Gráfica de barras por empresa -->
+    <canvas id="graficaEmpresas" style="margin-top:20px; max-height:300px;"></canvas>
+
+    <!-- ====================== -->
+    <!-- ESTADÍSTICAS POR CURSO -->
+    <!-- ====================== -->
+    <h3 style="margin-top:40px;">Alumnos por Curso</h3>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Curso</th>
+            <th>Nº Alumnos</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="entrada : ${alumnosPorCurso}">
+            <td th:text="${entrada.key}"></td>
+            <td th:text="${entrada.value}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Gráfica de barras por curso -->
+    <canvas id="graficaCursos" style="margin-top:20px; max-height:300px;"></canvas>
+
+</div>
+
+<script th:inline="javascript">
+    /*
+     * Recogemos los datos que el servidor ha pasado a la vista
+     * y los convertimos a arrays de JavaScript para Chart.js.
+     */
+
+    // Datos de empresas
+    const etiquetasEmpresas = /*[[${alumnosPorEmpresa.keySet()}]]*/ [];
+    const valoresEmpresas = /*[[${alumnosPorEmpresa.values()}]]*/ [];
+
+    // Datos de cursos
+    const etiquetasCursos = /*[[${alumnosPorCurso.keySet()}]]*/ [];
+    const valoresCursos = /*[[${alumnosPorCurso.values()}]]*/ [];
+
+    // Creamos la gráfica de barras para empresas
+    new Chart(document.getElementById('graficaEmpresas'), {
+        type: 'bar',
+        data: {
+            labels: etiquetasEmpresas,
+            datasets: [{
+                label: 'Nº de alumnos',
+                data: valoresEmpresas,
+                backgroundColor: '#2c3e50'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Alumnos asignados por empresa'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    // Mostramos solo números enteros en el eje Y
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // Creamos la gráfica de barras para cursos
+    new Chart(document.getElementById('graficaCursos'), {
+        type: 'bar',
+        data: {
+            labels: etiquetasCursos,
+            datasets: [{
+                label: 'Nº de alumnos',
+                data: valoresCursos,
+                backgroundColor: '#27ae60'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Alumnos en prácticas por curso'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

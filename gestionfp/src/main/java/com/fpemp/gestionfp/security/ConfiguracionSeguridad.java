@@ -41,7 +41,8 @@ public class ConfiguracionSeguridad {
                         // La API REST es accesible sin login (para la app móvil)
                         .requestMatchers("/api/**").permitAll()
                         // Solo la Directiva puede gestionar profesores y cursos
-                        .requestMatchers("/profesores/**", "/cursos/**").hasRole("DIRECTIVA")
+                        // Solo la Directiva puede gestionar profesores, cursos y ver estadísticas
+                        .requestMatchers("/profesores/**", "/cursos/**", "/estadisticas").hasRole("DIRECTIVA")
                         // El resto requiere estar autenticado
                         .anyRequest().authenticated()
                 )
